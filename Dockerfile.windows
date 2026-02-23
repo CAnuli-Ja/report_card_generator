@@ -1,0 +1,34 @@
+# Dockerfile for building Windows executable
+# This builds the PyInstaller package which will work on Windows
+# Note: The resulting .exe is built for Windows but can be created on any OS
+
+FROM python:3.9-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install required Python packages
+RUN pip install --upgrade pip && \
+    pip install pandas openpyxl python-docx PyInstaller
+
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY report_card_gui.py .
+COPY requirements.txt .
+
+# Build the Windows executable using PyInstaller
+RUN pyinstaller \
+    --onefile \
+    --windowed \
+    --name "Report_Card_Generator" \
+    --distpath ./dist \
+    --buildpath ./build \
+    --specpath ./build \
+    report_card_gui.py
+
+# The executable will be in the dist/ folder
+CMD ["bash", "-c", "echo '=== Build Complete ===' && echo 'Your executable is ready at: dist/Report_Card_Generator.exe' && ls -lh dist/"]

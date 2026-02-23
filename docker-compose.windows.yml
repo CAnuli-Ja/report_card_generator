@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  windows-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.windows
+    volumes:
+      - ./dist:/app/dist
+      - ./build:/app/build
+    container_name: report_card_builder
