@@ -3,6 +3,7 @@ from docx import Document
 import os
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from tkinter import ttk
 
 # ---------------- AUTO COMMENT ---------------- #
 def auto_comment(avg):
@@ -21,13 +22,13 @@ def auto_comment(avg):
 
 # ---------------- MAIN LOGIC ---------------- #
 def generate_reports():
-    if not excel_path.get() or not template_path.get() or not output_dir.get():
-        messagebox.showerror("Missing Information", "Please select all required files and output folder.")
+    if not excel_path.get() or not template_path.get() or not output_dir.get() or not sheet_name.get():
+        messagebox.showerror("Missing Information", "Please select all required files, output folder, and enter the sheet name.")
         return
 
     try:
-        # Read Excel file
-        raw = pd.read_excel(excel_path.get(), header=None)
+        # Read Excel file with specified sheet name
+        raw = pd.read_excel(excel_path.get(), sheet_name=sheet_name.get(), header=None)
         # Find the row where actual data starts (first row with a number in column 0)
         start_row = None
         for idx, val in enumerate(raw[0]):
@@ -196,7 +197,25 @@ def generate_reports():
 
 # ---------------- FILE PICKERS ---------------- #
 def browse_excel():
-    excel_path.set(filedialog.askopenfilename(filetypes=[("Excel Files", "*.xlsx")]))
+    file_path = filedialog.askopenfilename(filetypes=[("Excel Files", "*.xlsx")])
+    if file_path:
+        print(f"Selected Excel file: {file_path}")
+        excel_path.set(file_path)
+        load_sheet_names(file_path)
+
+def load_sheet_names(file_path):
+    """Load sheet names from the selected Excel file"""
+    try:
+        xls = pd.ExcelFile(file_path)
+        sheets = xls.sheet_names
+        print(f"Found sheets: {sheets}")
+        sheet_dropdown['values'] = sheets
+        if sheets:
+            sheet_name.set(sheets[0])  # Set first sheet as default
+            print(f"Set default sheet to: {sheets[0]}")
+    except Exception as e:
+        print(f"Error loading sheets: {str(e)}")
+        messagebox.showerror("Error", f"Could not read sheet names: {str(e)}")
 
 def browse_template():
     template_path.set(filedialog.askopenfilename(filetypes=[("Word Files", "*.docx")]))
@@ -207,31 +226,49 @@ def browse_output():
 # ---------------- GUI SETUP ---------------- #
 root = tk.Tk()
 root.title("JWFCSS Report Card Generator")
-root.geometry("580x420")
-root.resizable(False, False)
+root.geometry("650x550")
+root.resizable(False, True)
+
+# Create main frame
+main_frame = tk.Frame(root)
+main_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 excel_path = tk.StringVar()
 template_path = tk.StringVar()
 output_dir = tk.StringVar()
+sheet_name = tk.StringVar()
+sheets = []
+# Excel Gradesheet section
+tk.Label(main_frame, text="Excel Gradesheet", font=("Arial", 10, "bold")).pack(anchor="w", pady=(10, 2))
+tk.Entry(main_frame, textvariable=excel_path, width=80).pack()
+tk.Button(main_frame, text="Browse Excel Gradesheet", command=browse_excel, width=40).pack(pady=5)
 
-tk.Label(root, text="Excel Gradesheet").pack(pady=5)
-tk.Entry(root, textvariable=excel_path, width=70).pack()
-tk.Button(root, text="Browse Excel Gradesheet", command=browse_excel).pack(pady=5)
+# Sheet Name section
+tk.Label(main_frame, text="Sheet Name", font=("Arial", 10, "bold")).pack(anchor="w", pady=(10, 2))
+sheet_dropdown = ttk.Combobox(main_frame, values=["option1", "option2"], width=77, state="readonly")
+sheet_dropdown.pack(fill=tk.X, padx=2, pady=5)
+print("Sheet dropdown created and packed")
 
-tk.Label(root, text="Word Report Template").pack(pady=5)
-tk.Entry(root, textvariable=template_path, width=70).pack()
-tk.Button(root, text="Browse Word Report Template", command=browse_template).pack(pady=5)
+# Word Report Template section
+tk.Label(main_frame, text="Word Report Template", font=("Arial", 10, "bold")).pack(anchor="w", pady=(10, 2))
+tk.Entry(main_frame, textvariable=template_path, width=80).pack()
+tk.Button(main_frame, text="Browse Word Report Template", command=browse_template, width=40).pack(pady=5)
 
-tk.Label(root, text="Output Folder").pack(pady=5)
-tk.Entry(root, textvariable=output_dir, width=70).pack()
-tk.Button(root, text="Browse Output Folder", command=browse_output).pack(pady=5)
+# Output Folder section
+tk.Label(main_frame, text="Output Folder", font=("Arial", 10, "bold")).pack(anchor="w", pady=(10, 2))
+tk.Entry(main_frame, textvariable=output_dir, width=80).pack()
+tk.Button(main_frame, text="Browse Output Folder", command=browse_output, width=40).pack(pady=5)
+
+# Generate button
 tk.Button(
-    root,
+    main_frame,
     text="Generate Report Cards",
     command=generate_reports,
     height=2,
-    width=25,
-    font=("Arial", 12, "bold")
-).pack(pady=20)
+    width=30,
+    font=("Arial", 12, "bold"),
+    bg="#4CAF50",
+    fg="white"
+).pack(pady=15)
 
 root.mainloop()
