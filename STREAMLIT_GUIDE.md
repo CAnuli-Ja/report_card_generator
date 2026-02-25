@@ -12,7 +12,7 @@ Streamlit is a modern Python framework that makes it easy to create beautiful we
 ✅ **Web-Based** - Access from any device with a browser  
 ✅ **No Installation** - Users don't need to install Python or the app  
 ✅ **Responsive** - Works on desktop, tablet, and mobile  
-✅ **Real-Time Feedback** - See progress and status updates  
+✅ **Real-Time Feedback** - See progress and status updates
 
 ## Installation
 
@@ -23,6 +23,7 @@ pip install -r requirements_streamlit.txt
 ```
 
 Or manually:
+
 ```bash
 pip install streamlit pandas openpyxl python-docx
 ```
@@ -51,20 +52,21 @@ The app will open in your browser at `http://localhost:8501`
 
 ## Comparison: Tkinter vs Streamlit
 
-| Feature | Tkinter | Streamlit |
-|---------|---------|-----------|
-| File Upload | File browser dialog | Drag-and-drop |
-| Download | Manual folder selection | Direct download buttons |
-| UI Quality | Basic | Modern & Professional |
-| Deployment | Desktop app | Web app / Cloud |
-| User Experience | Traditional desktop | Modern web app |
-| Mobile Access | No | Yes |
-| Installation | Executable needed | Just run script |
-| Customization | Moderate | Easy with markdown |
+| Feature         | Tkinter                 | Streamlit               |
+| --------------- | ----------------------- | ----------------------- |
+| File Upload     | File browser dialog     | Drag-and-drop           |
+| Download        | Manual folder selection | Direct download buttons |
+| UI Quality      | Basic                   | Modern & Professional   |
+| Deployment      | Desktop app             | Web app / Cloud         |
+| User Experience | Traditional desktop     | Modern web app          |
+| Mobile Access   | No                      | Yes                     |
+| Installation    | Executable needed       | Just run script         |
+| Customization   | Moderate                | Easy with markdown      |
 
 ## Deployment Options
 
 ### Option 1: Local Network (Easiest)
+
 ```bash
 streamlit run app_streamlit.py
 # Share the URL with your team on the same network
@@ -80,6 +82,7 @@ streamlit run app_streamlit.py
 6. Deploy in one click!
 
 **Benefits:**
+
 - Free hosting
 - Your team can use it from anywhere
 - No local setup needed
@@ -88,6 +91,7 @@ streamlit run app_streamlit.py
 ### Option 3: Self-Hosted (More Control)
 
 Deploy on your own server:
+
 - AWS EC2
 - Google Cloud
 - Azure
@@ -102,12 +106,14 @@ streamlit run app_streamlit.py --server.port 80 --server.address 0.0.0.0
 ## File Format Requirements
 
 ### Excel File (.xlsx)
+
 - Student ID in first column (numeric)
 - Student data starting from row with first student number
 - All subject grades as numbers
 - Headers in the row immediately before data starts
 
 ### Word Template (.docx)
+
 - Include placeholders like `{{NAME}}`, `{{MATH}}`, etc.
 - See [Available Placeholders](#available-placeholders) for complete list
 - Template will be filled in for each student
@@ -119,21 +125,25 @@ See the app for the complete list of placeholders, or check the embedded help in
 ## Troubleshooting
 
 ### "Streamlit is not installed"
+
 ```bash
 pip install streamlit
 ```
 
 ### Port 8501 already in use
+
 ```bash
 streamlit run app_streamlit.py --server.port 8502
 ```
 
 ### File upload fails
+
 - Check file size (should be under 200MB)
 - Ensure file format is correct (.xlsx and .docx)
 - Try refreshing the page
 
 ### Reports not generating
+
 - Verify Excel file has student data starting with a number
 - Check that Word template has valid placeholders
 - Look for error messages in the console
