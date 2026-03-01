@@ -74,6 +74,21 @@ if page == "Home":
     st.markdown("### Automated Report Card Creation Made Simple")
     st.write("Transform hours of manual work into minutes!")
     
+    # Add prominent presentation download button
+    st.divider()
+    col_pres1, col_pres2, col_pres3 = st.columns([1, 2, 1])
+    with col_pres2:
+        with open('/Users/christine.anuli/Downloads/report_card_generator/PRESENTATION.html', 'r') as f:
+            presentation_content = f.read()
+        
+        st.download_button(
+            label="🎬 View Full Presentation (7 minutes)",
+            data=presentation_content,
+            file_name="PRESENTATION.html",
+            mime="text/html",
+            use_container_width=True,
+            help="Download and open in your browser for the complete stakeholder presentation"
+        )
     st.divider()
     
     # Display presentation in iframe
@@ -100,7 +115,7 @@ if page == "Home":
             st.info("""
             **📊 Interactive Presentation**
             
-            A full 7-minute presentation is available in `PRESENTATION.html`
+            A full 7-minute presentation is available for download
             
             **Features:**
             - 8 comprehensive slides
@@ -108,7 +123,29 @@ if page == "Home":
             - Beautiful visual design
             - Perfect for stakeholder meetings
             
-            **To view:** Open `PRESENTATION.html` in your web browser
+            **To view:** Download and open the presentation file in your web browser
+            """)
+            
+            # Create download button for presentation
+            with open('/Users/christine.anuli/Downloads/report_card_generator/PRESENTATION.html', 'r') as f:
+                presentation_content = f.read()
+            
+            st.download_button(
+                label="📥 Download Interactive Presentation (PRESENTATION.html)",
+                data=presentation_content,
+                file_name="PRESENTATION.html",
+                mime="text/html",
+                use_container_width=True
+            )
+            
+            st.markdown("""
+            **💡 Tip:** After downloading, open the HTML file in your web browser to view the full presentation.
+            Use arrow keys or buttons to navigate through 8 slides covering:
+            - Problem & Solution
+            - Key Features & Benefits
+            - Step-by-step Usage Guide
+            - Technology Stack
+            - Call to Action
             """)
         else:
             st.subheader("✨ Key Features")
@@ -172,6 +209,8 @@ if page == "Home":
             ✅ **Ready to get started?**
             
             Click "Generate Reports" in the sidebar to upload your files and create your report cards!
+            
+            **Or share the full presentation with stakeholders** - use the download button at the top of this page.
             """)
 
 else:
