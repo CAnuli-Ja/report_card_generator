@@ -4,6 +4,7 @@ from docx import Document
 import io
 import tempfile
 import os
+from pathlib import Path
 
 # Page configuration
 st.set_page_config(
@@ -12,6 +13,10 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Get the directory of the current script
+SCRIPT_DIR = Path(__file__).parent
+PRESENTATION_PATH = SCRIPT_DIR / "PRESENTATION.html"
 
 # Custom CSS
 st.markdown("""
@@ -78,17 +83,21 @@ if page == "Home":
     st.divider()
     col_pres1, col_pres2, col_pres3 = st.columns([1, 2, 1])
     with col_pres2:
-        with open('/Users/christine.anuli/Downloads/report_card_generator/PRESENTATION.html', 'r') as f:
-            presentation_content = f.read()
-        
-        st.download_button(
-            label="🎬 View Full Presentation (7 minutes)",
-            data=presentation_content,
-            file_name="PRESENTATION.html",
-            mime="text/html",
-            use_container_width=True,
-            help="Download and open in your browser for the complete stakeholder presentation"
-        )
+        # Load presentation file
+        if PRESENTATION_PATH.exists():
+            with open(PRESENTATION_PATH, 'r') as f:
+                presentation_content = f.read()
+            
+            st.download_button(
+                label="🎬 View Full Presentation (7 minutes)",
+                data=presentation_content,
+                file_name="PRESENTATION.html",
+                mime="text/html",
+                use_container_width=True,
+                help="Download and open in your browser for the complete stakeholder presentation"
+            )
+        else:
+            st.warning("Presentation file not found. Please ensure PRESENTATION.html is in the project directory.")
     st.divider()
     
     # Display presentation in iframe
@@ -127,16 +136,19 @@ if page == "Home":
             """)
             
             # Create download button for presentation
-            with open('/Users/christine.anuli/Downloads/report_card_generator/PRESENTATION.html', 'r') as f:
-                presentation_content = f.read()
-            
-            st.download_button(
-                label="📥 Download Interactive Presentation (PRESENTATION.html)",
-                data=presentation_content,
-                file_name="PRESENTATION.html",
-                mime="text/html",
-                use_container_width=True
-            )
+            if PRESENTATION_PATH.exists():
+                with open(PRESENTATION_PATH, 'r') as f:
+                    presentation_content = f.read()
+                
+                st.download_button(
+                    label="📥 Download Interactive Presentation (PRESENTATION.html)",
+                    data=presentation_content,
+                    file_name="PRESENTATION.html",
+                    mime="text/html",
+                    use_container_width=True
+                )
+            else:
+                st.warning("Presentation file not found. Please ensure PRESENTATION.html is in the project directory.")
             
             st.markdown("""
             **💡 Tip:** After downloading, open the HTML file in your web browser to view the full presentation.
