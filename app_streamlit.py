@@ -199,24 +199,6 @@ if page == "Home":
             
             st.divider()
             
-            st.subheader("🎯 Supported Fields (35+ Placeholders)")
-            
-            fields_dict = {
-                "Student Information": ["{{NAME}}", "Student ID"],
-                "Academic Subjects": ["{{MATH}}", "{{ELANG}}", "{{ELIT}}", "{{FR}}", "{{SPN}}", "{{SSTUD}}", "{{HIST}}", "{{HFL}}", "{{LIT}}", "{{REL}}", "{{AGR}}", "{{INTSCI}}", "{{PE}}", "{{IT}}", "{{VA}}", "{{HE}}"],
-                "Academic Summary": ["{{TOTAL}}", "{{SAVG}}", "{{TOTAL_SUBJECTS}}", "{{PASSED}}"],
-                "Comments": ["{{FORM_TEACHER_COMMENTS}}", "{{PRINCIPAL_COMMENTS}}"],
-                "Behavioral Assessment": ["{{ATA}}", "{{RESP}}", "{{CO_OP}}", "{{ATC}}", "{{LEAD}}", "{{DEP}}", "{{SOC}}", "{{INIT}}", "{{CON_MGT}}", "{{APP}}"]
-            }
-            
-            for category, fields in fields_dict.items():
-                with st.expander(f"**{category}**"):
-                    cols = st.columns(3)
-                    for idx, field in enumerate(fields):
-                        cols[idx % 3].write(f"`{field}`")
-            
-            st.divider()
-            
             st.success("""
             ✅ **Ready to get started?**
             
