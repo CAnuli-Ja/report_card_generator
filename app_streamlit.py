@@ -6,6 +6,11 @@ import tempfile
 import os
 from pathlib import Path
 
+# Get the directory of the current script
+SCRIPT_DIR = Path(__file__).parent
+PRESENTATION_HTML_PATH = SCRIPT_DIR / "PRESENTATION.html"
+PRESENTATION_PPTX_PATH = SCRIPT_DIR / "PRESENTATION.pptx"
+
 # Page configuration
 st.set_page_config(
     page_title="JWFCSS Report Card Generator",
@@ -13,10 +18,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# Get paths for presentation files
-PRESENTATION_HTML_PATH = SCRIPT_DIR / "PRESENTATION.html"
-PRESENTATION_PPTX_PATH = SCRIPT_DIR / "PRESENTATION.pptx"
 
 # Custom CSS
 st.markdown("""
