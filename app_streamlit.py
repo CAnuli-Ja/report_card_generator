@@ -69,61 +69,110 @@ page = st.sidebar.radio(
 )
 
 if page == "Home":
-    # Landing page
-    st.markdown('<div class="main-header">Welcome to Report Card Generator</div>', unsafe_allow_html=True)
-    st.write("Automatically generate personalized report cards for all your students using Excel gradesheets and Word templates.")
+    # Display interactive presentation
+    st.markdown('<div class="main-header">📋 Report Card Generator</div>', unsafe_allow_html=True)
+    st.markdown("### Automated Report Card Creation Made Simple")
+    st.write("Transform hours of manual work into minutes!")
     
-    col1, col2 = st.columns(2)
+    st.divider()
     
-    with col1:
-        st.subheader("✨ Features")
-        features = [
-            "Batch generate report cards for entire classes",
-            "Automatic grade-based comments",
-            "Support for multiple subjects",
-            "Customizable Word templates",
-            "Process multiple classes in one workbook",
-            "Fast and efficient document creation"
-        ]
-        for feature in features:
-            st.write(f"✓ {feature}")
+    # Display presentation in iframe
+    presentation_html = """
+    <iframe 
+        src="file:///Users/christine.anuli/Downloads/report_card_generator/PRESENTATION.html" 
+        style="width:100%; height:800px; border:none; border-radius:10px;" 
+        allowfullscreen>
+    </iframe>
+    """
+    
+    # Alternative: Interactive presentation slides within Streamlit
+    col1, col2 = st.columns([8, 2])
     
     with col2:
-        st.subheader("🚀 Quick Start")
-        st.markdown("""
-        1. **Prepare your Excel file** with student data
-        2. **Create a Word template** with placeholders
-        3. **Upload your files** in the Generate Reports page
-        4. **Get your report cards** in seconds!
-        """)
+        presentation_choice = st.radio(
+            "View Mode:",
+            ["Interactive Slides", "Features Overview"],
+            label_visibility="collapsed"
+        )
     
-    st.divider()
-    
-    st.subheader("📊 Supported Data Fields")
-    st.write("Your Excel file should include:")
-    fields = {
-        "Student Info": ["Student ID", "First Name", "Last Name"],
-        "Subjects": ["Mathematics", "English Language", "French", "Social Studies", "History", "etc."],
-        "Statistics": ["Total Score", "Average", "Total Subjects", "Subjects Passed"],
-        "Behavioral": ["Deportment", "Responsibility", "Cooperation", "Leadership", "Initiative", "etc."],
-        "Comments": ["Form Teacher Comments", "Principal Comments"]
-    }
-    
-    for category, items in fields.items():
-        with st.expander(f"{category}"):
-            for item in items:
-                st.write(f"• {item}")
-    
-    st.divider()
-    
-    st.info("""
-    **Next Steps:**
-    - Click "Generate Reports" in the sidebar to get started
-    - Upload your Excel gradesheet
-    - Select the appropriate sheet name
-    - Upload your Word template
-    - Click Generate to create all report cards
-    """)
+    with col1:
+        if presentation_choice == "Interactive Slides":
+            st.info("""
+            **📊 Interactive Presentation**
+            
+            A full 7-minute presentation is available in `PRESENTATION.html`
+            
+            **Features:**
+            - 8 comprehensive slides
+            - Navigation with arrow keys
+            - Beautiful visual design
+            - Perfect for stakeholder meetings
+            
+            **To view:** Open `PRESENTATION.html` in your web browser
+            """)
+        else:
+            st.subheader("✨ Key Features")
+            col_features = st.columns(3)
+            with col_features[0]:
+                st.markdown("""
+                **⏱️ Save Time**
+                - Generate 100+ reports in seconds
+                - Automate repetitive tasks
+                - Focus on what matters
+                """)
+            with col_features[1]:
+                st.markdown("""
+                **✓ Reduce Errors**
+                - Consistent formatting
+                - No manual copying
+                - Professional results
+                """)
+            with col_features[2]:
+                st.markdown("""
+                **🔒 Secure & Private**
+                - Your data stays with you
+                - Cloud-based processing
+                - Encrypted transfers
+                """)
+            
+            st.divider()
+            
+            st.subheader("📊 How It Works")
+            step_col1, step_col2, step_col3, step_col4 = st.columns(4)
+            with step_col1:
+                st.markdown("### 1️⃣\nUpload Excel\nwith student\ndata")
+            with step_col2:
+                st.markdown("### 2️⃣\nSelect the\nsheet for your\nclass")
+            with step_col3:
+                st.markdown("### 3️⃣\nUpload your\nWord report\ntemplate")
+            with step_col4:
+                st.markdown("### 4️⃣\nClick Generate\nand download\nreports!")
+            
+            st.divider()
+            
+            st.subheader("🎯 Supported Fields (35+ Placeholders)")
+            
+            fields_dict = {
+                "Student Information": ["{{NAME}}", "Student ID"],
+                "Academic Subjects": ["{{MATH}}", "{{ELANG}}", "{{ELIT}}", "{{FR}}", "{{SPN}}", "{{SSTUD}}", "{{HIST}}", "{{HFL}}", "{{LIT}}", "{{REL}}", "{{AGR}}", "{{INTSCI}}", "{{PE}}", "{{IT}}", "{{VA}}", "{{HE}}"],
+                "Academic Summary": ["{{TOTAL}}", "{{SAVG}}", "{{TOTAL_SUBJECTS}}", "{{PASSED}}"],
+                "Comments": ["{{FORM_TEACHER_COMMENTS}}", "{{PRINCIPAL_COMMENTS}}"],
+                "Behavioral Assessment": ["{{ATA}}", "{{RESP}}", "{{CO_OP}}", "{{ATC}}", "{{LEAD}}", "{{DEP}}", "{{SOC}}", "{{INIT}}", "{{CON_MGT}}", "{{APP}}"]
+            }
+            
+            for category, fields in fields_dict.items():
+                with st.expander(f"**{category}**"):
+                    cols = st.columns(3)
+                    for idx, field in enumerate(fields):
+                        cols[idx % 3].write(f"`{field}`")
+            
+            st.divider()
+            
+            st.success("""
+            ✅ **Ready to get started?**
+            
+            Click "Generate Reports" in the sidebar to upload your files and create your report cards!
+            """)
 
 else:
     # Generate Reports page
