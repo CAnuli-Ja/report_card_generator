@@ -14,9 +14,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Get the directory of the current script
-SCRIPT_DIR = Path(__file__).parent
-PRESENTATION_PATH = SCRIPT_DIR / "PRESENTATION.html"
+# Get paths for presentation files
+PRESENTATION_HTML_PATH = SCRIPT_DIR / "PRESENTATION.html"
+PRESENTATION_PPTX_PATH = SCRIPT_DIR / "PRESENTATION.pptx"
 
 # Custom CSS
 st.markdown("""
@@ -79,25 +79,48 @@ if page == "Home":
     st.markdown("### Automated Report Card Creation Made Simple")
     st.write("Transform hours of manual work into minutes!")
     
-    # Add prominent presentation download button
+    # Add prominent presentation download buttons
     st.divider()
-    col_pres1, col_pres2, col_pres3 = st.columns([1, 2, 1])
-    with col_pres2:
-        # Load presentation file
-        if PRESENTATION_PATH.exists():
-            with open(PRESENTATION_PATH, 'r') as f:
-                presentation_content = f.read()
+    st.markdown("### 📥 Download Presentation")
+    
+    col_html, col_pptx = st.columns(2)
+    
+    with col_html:
+        # Load HTML presentation file
+        if PRESENTATION_HTML_PATH.exists():
+            with open(PRESENTATION_HTML_PATH, 'r') as f:
+                presentation_html_content = f.read()
             
             st.download_button(
-                label="🎬 View Full Presentation (7 minutes)",
-                data=presentation_content,
+                label="🌐 Interactive HTML Version",
+                data=presentation_html_content,
                 file_name="PRESENTATION.html",
                 mime="text/html",
                 use_container_width=True,
-                help="Download and open in your browser for the complete stakeholder presentation"
+                help="Web-based presentation with keyboard navigation"
             )
+            st.caption("Best for: Browser viewing, interactive slides")
         else:
-            st.warning("Presentation file not found. Please ensure PRESENTATION.html is in the project directory.")
+            st.warning("HTML presentation file not found.")
+    
+    with col_pptx:
+        # Load PowerPoint presentation file
+        if PRESENTATION_PPTX_PATH.exists():
+            with open(PRESENTATION_PPTX_PATH, 'rb') as f:
+                presentation_pptx_content = f.read()
+            
+            st.download_button(
+                label="📊 PowerPoint Version (PPTX)",
+                data=presentation_pptx_content,
+                file_name="PRESENTATION.pptx",
+                mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                use_container_width=True,
+                help="Professional PowerPoint presentation for Microsoft Office"
+            )
+            st.caption("Best for: Microsoft Office, editable slides")
+        else:
+            st.warning("PowerPoint presentation file not found.")
+    
     st.divider()
     
     # Display presentation in iframe
@@ -124,35 +147,53 @@ if page == "Home":
             st.info("""
             **📊 Interactive Presentation**
             
-            A full 7-minute presentation is available for download
+            A full 7-minute presentation is available in two formats:
             
             **Features:**
             - 8 comprehensive slides
-            - Navigation with arrow keys
             - Beautiful visual design
             - Perfect for stakeholder meetings
-            
-            **To view:** Download and open the presentation file in your web browser
             """)
             
-            # Create download button for presentation
-            if PRESENTATION_PATH.exists():
-                with open(PRESENTATION_PATH, 'r') as f:
-                    presentation_content = f.read()
-                
-                st.download_button(
-                    label="📥 Download Interactive Presentation (PRESENTATION.html)",
-                    data=presentation_content,
-                    file_name="PRESENTATION.html",
-                    mime="text/html",
-                    use_container_width=True
-                )
-            else:
-                st.warning("Presentation file not found. Please ensure PRESENTATION.html is in the project directory.")
+            # Create download buttons for both formats
+            col_h, col_p = st.columns(2)
+            
+            with col_h:
+                if PRESENTATION_HTML_PATH.exists():
+                    with open(PRESENTATION_HTML_PATH, 'r') as f:
+                        presentation_html_content = f.read()
+                    
+                    st.download_button(
+                        label="📥 Download HTML Presentation",
+                        data=presentation_html_content,
+                        file_name="PRESENTATION.html",
+                        mime="text/html",
+                        use_container_width=True
+                    )
+                else:
+                    st.warning("HTML presentation file not found.")
+            
+            with col_p:
+                if PRESENTATION_PPTX_PATH.exists():
+                    with open(PRESENTATION_PPTX_PATH, 'rb') as f:
+                        presentation_pptx_content = f.read()
+                    
+                    st.download_button(
+                        label="📥 Download PowerPoint",
+                        data=presentation_pptx_content,
+                        file_name="PRESENTATION.pptx",
+                        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        use_container_width=True
+                    )
+                else:
+                    st.warning("PowerPoint presentation file not found.")
             
             st.markdown("""
-            **💡 Tip:** After downloading, open the HTML file in your web browser to view the full presentation.
-            Use arrow keys or buttons to navigate through 8 slides covering:
+            **💡 Tips:**
+            - **HTML**: Open in any web browser, use arrow keys to navigate
+            - **PowerPoint**: Edit directly in Microsoft Office, fully customizable
+            
+            Both versions cover all 8 slides:
             - Problem & Solution
             - Key Features & Benefits
             - Step-by-step Usage Guide
