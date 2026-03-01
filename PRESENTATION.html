@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Card Generator - Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .presentation {
+            max-width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.8rem;
+            line-height: 1.8;
+            margin: 15px 0;
+            max-width: 900px;
+        }
+
+        .slide ul {
+            text-align: left;
+            display: inline-block;
+            list-style: none;
+        }
+
+        .slide li {
+            margin: 25px 0;
+            padding-left: 50px;
+            position: relative;
+        }
+
+        .slide li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Slide backgrounds */
+        .slide:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .slide:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .slide:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .slide:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .slide:nth-child(5) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #333;
+        }
+
+        .slide:nth-child(6) {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .slide:nth-child(7) {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
+        .slide:nth-child(8) {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+        }
+
+        /* Tech stack styling */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 800px;
+            margin: 30px auto;
+            text-align: left;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-item strong {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .tech-item p {
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        /* Steps styling */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .step {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .step-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        /* Benefits */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .benefit-box {
+            background: rgba(255,255,255,0.2);
+            padding: 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .benefit-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .benefit-box p {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            background: rgba(255,255,255,0.3);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.05);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 1.3rem;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            opacity: 0.95;
+            margin-top: 20px;
+        }
+
+        .highlight {
+            background: rgba(255,255,255,0.3);
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 30px auto;
+            text-align: left;
+        }
+
+        .two-column h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">8</span>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide active">
+        <h1>📋 Report Card Generator</h1>
+        <p class="subtitle">Automated Report Card Creation Made Simple</p>
+        <div class="highlight">Transform hours of manual work into minutes</div>
+    </div>
+
+    <!-- Slide 2: The Problem -->
+    <div class="slide">
+        <h2>The Challenge</h2>
+        <ul>
+            <li>Creating individual report cards is time-consuming</li>
+            <li>Manual copying and pasting from Excel to Word</li>
+            <li>High risk of errors and inconsistencies</li>
+            <li>Repetitive work that takes valuable time away from educators</li>
+        </ul>
+    </div>
+
+    <!-- Slide 3: The Solution -->
+    <div class="slide">
+        <h2>✨ The Solution</h2>
+        <p>One click to generate 100+ professional report cards automatically</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <p>Upload Excel</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <p>Select Sheet</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <p>Upload Template</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <p>Generate!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Key Features -->
+    <div class="slide">
+        <h2>🎯 Key Features</h2>
+        <ul>
+            <li>Works with your existing Excel spreadsheets</li>
+            <li>Customizable Word templates (35+ fields available)</li>
+            <li>Batch processing - generate all reports at once</li>
+            <li>Download individually or as ZIP file</li>
+            <li>No installation needed - use from your browser</li>
+        </ul>
+    </div>
+
+    <!-- Slide 5: How It Works - Step by Step -->
+    <div class="slide">
+        <h2>📝 How to Use (Step 1-2)</h2>
+        <div class="two-column">
+            <div>
+                <h3>Step 1: Upload Excel File</h3>
+                <p>Click "Choose Excel File" and select your spreadsheet with student data</p>
+                <p style="margin-top: 30px;"><strong>Note:</strong> First column should have student numbers</p>
+            </div>
+            <div>
+                <h3>Step 2: Select Sheet</h3>
+                <p>Choose the class/form sheet from your Excel file</p>
+                <p style="margin-top: 30px;"><strong>Example:</strong> F1J, F2W, F3J, F4W</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: How It Works - Step by Step -->
+    <div class="slide">
+        <h2>📝 How to Use (Step 3-4)</h2>
+        <div class="two-column">
+            <div>
+                <h3>Step 3: Upload Template</h3>
+                <p>Choose your Word report card template (.docx file)</p>
+                <p style="margin-top: 30px;"><strong>Tip:</strong> Use placeholders like {{NAME}}, {{MATH}}, {{COMMENTS}}</p>
+            </div>
+            <div>
+                <h3>Step 4: Generate & Download</h3>
+                <p>Click the Generate button and wait for processing</p>
+                <p style="margin-top: 30px;"><strong>Download:</strong> All reports at once as ZIP or individually</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tech Stack -->
+    <div class="slide">
+        <h2>🔧 Technology (For IT Staff)</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <strong>Frontend</strong>
+                <p>Streamlit - Modern web interface, no coding needed</p>
+            </div>
+            <div class="tech-item">
+                <strong>Backend</strong>
+                <p>Python - Powerful data processing</p>
+            </div>
+            <div class="tech-item">
+                <strong>Data Processing</strong>
+                <p>Pandas - Excel file reading & manipulation</p>
+            </div>
+            <div class="tech-item">
+                <strong>Document Generation</strong>
+                <p>Python-docx - Word file creation & customization</p>
+            </div>
+        </div>
+        <p style="margin-top: 40px;"><strong>Deployment:</strong> Cloud-based (Streamlit Cloud) - Secure, scalable, automatic updates</p>
+    </div>
+
+    <!-- Slide 8: Benefits & Call to Action -->
+    <div class="slide">
+        <h2>✅ Benefits</h2>
+        <div class="benefits">
+            <div class="benefit-box">
+                <div class="benefit-icon">⏱️</div>
+                <h3>Save Time</h3>
+                <p>Hours of work done in minutes</p>
+            </div>
+            <div class="benefit-box">
+                <div class="benefit-icon">✓</div>
+                <h3>Reduce Errors</h3>
+                <p>Consistent, accurate reports</p>
+            </div>
+            <div class="benefit-box">
+                <div class="benefit-icon">🔒</div>
+                <h3>Secure & Private</h3>
+                <p>Your data stays with you</p>
+            </div>
+        </div>
+        <div class="highlight" style="margin-top: 50px;">Ready to transform your report card process?</div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-buttons">
+        <button onclick="previousSlide()">← Previous</button>
+        <button onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        document.getElementById('total-slides').textContent = totalSlides;
+    </script>
+</body>
+</html>
